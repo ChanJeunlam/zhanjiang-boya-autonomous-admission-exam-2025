@@ -20,11 +20,11 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Build with Jekyll
-        uses: actions/jekyll-build-pages@v1
-        with:
-          source: ./
-          destination: ./_site
+      - name: Copy files to _site
+        run: |
+          mkdir -p _site
+          cp -r index.html 湛江市博雅学校2025年自主招生/ _site/
+          cp 湛江市博雅学校2025年自主招生_analysis.md _site/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
