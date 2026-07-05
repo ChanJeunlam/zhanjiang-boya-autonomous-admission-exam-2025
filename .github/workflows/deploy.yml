@@ -5,40 +5,22 @@ on:
     branches:
       - main
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
-
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Copy files to _site
+      - name: Copy files
         run: |
-          mkdir -p _site
-          cp -r index.html 湛江市博雅学校2025年自主招生/ _site/
-          cp 湛江市博雅学校2025年自主招生_analysis.md _site/
+          mkdir -p deploy
+          cp index.html deploy/
+          cp -r 湛江市博雅学校2025年自主招生/ deploy/
+          cp 湛江市博雅学校2025年自主招生_analysis.md deploy/
 
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          name: github-pages
-          path: ./_site
-
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    runs-on: ubuntu-latest
-    needs: build
-    steps:
-      - name: Deploy
-        id: deployment
-        uses: actions/deploy-pages@v4
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./deploy
